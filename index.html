@@ -2,46 +2,408 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ask RAG Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RITBuddy - Your AI Assistant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    input, button { padding: 0.5em; font-size: 1em; }
-    #answer { margin-top: 1em; font-weight: bold; }
+    :root {
+      --primary-color: #4a6fa5;
+      --secondary-color: #166088;
+      --accent-color: #4fc3f7;
+      --background-color: #f8f9fa;
+      --text-color: #333;
+      --light-text: #f8f9fa;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* Splash Screen */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.8s ease-out;
+    }
+    
+    .splash-logo {
+      width: 150px;
+      height: 150px;
+      background-color: var(--light-text);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      animation: pulse 2s infinite;
+    }
+    
+    .splash-logo i {
+      font-size: 80px;
+      color: var(--primary-color);
+    }
+    
+    .splash-title {
+      font-size: 2.5rem;
+      color: var(--light-text);
+      margin-bottom: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    
+    .splash-subtitle {
+      font-size: 1.2rem;
+      color: var(--light-text);
+      opacity: 0.9;
+    }
+    
+    .loading-bar {
+      width: 200px;
+      height: 6px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+      margin-top: 30px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .loading-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background-color: var(--accent-color);
+      animation: loading 2s ease-in-out forwards;
+    }
+    
+    @keyframes loading {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Main Content */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    
+    .visible {
+      opacity: 1;
+    }
+    
+    header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1rem;
+    }
+    
+    .logo i {
+      font-size: 24px;
+      color: white;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+    
+    .input-group {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+    
+    #question {
+      flex: 1;
+      padding: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px 0 0 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    
+    #question:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+    
+    .ask-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      padding: 0 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+    }
+    
+    .ask-btn:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    .ask-btn i {
+      margin-right: 8px;
+    }
+    
+    .answer-container {
+      min-height: 100px;
+    }
+    
+    #answer {
+      padding: 1.5rem;
+      background-color: #f5f7fa;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      transition: var(--transition);
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+    }
+    
+    .loading-dots {
+      display: flex;
+    }
+    
+    .loading-dots span {
+      width: 12px;
+      height: 12px;
+      margin: 0 5px;
+      background-color: var(--accent-color);
+      border-radius: 50%;
+      animation: bounce 1.5s infinite ease-in-out;
+    }
+    
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .input-group {
+        flex-direction: column;
+      }
+      
+      #question {
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+      
+      .ask-btn {
+        border-radius: 8px;
+        padding: 1rem;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2>Ask the RAG Model</h2>
-  <input type="text" id="question" placeholder="Type your question" size="50">
-  <button onclick="askQuestion()">Ask</button>
-  <div id="answer"></div>
+  <!-- Splash Screen -->
+  <div id="splash-screen">
+    <div class="splash-logo">
+      <i class="fas fa-robot"></i>
+    </div>
+    <h1 class="splash-title">RITBuddy</h1>
+    <p class="splash-subtitle">Your Intelligent Assistant</p>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="container" id="main-content">
+    <header>
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+      </div>
+      <h1>RITBuddy</h1>
+    </header>
+    
+    <div class="card">
+      <h2>Ask me anything about RIT documents</h2>
+      <p>I can answer questions based on the information in the RIT circulars and documents.</p>
+      
+      <div class="input-group">
+        <input type="text" id="question" placeholder="Type your question here..." autofocus>
+        <button class="ask-btn" onclick="askQuestion()"><i class="fas fa-paper-plane"></i> Ask</button>
+      </div>
+      
+      <div class="answer-container">
+        <div id="answer">Your answer will appear here...</div>
+      </div>
+    </div>
 
-  <script>
-    async function askQuestion() {
-  const question = document.getElementById('question').value;
-  const answerDiv = document.getElementById('answer');
-  answerDiv.textContent = 'Loading...';
+  <footer>
+    <p>© 2025 RITBuddy - Powered by RAG Technology</p>
+  </footer>
+</div>
 
-  try {
-    const response = await fetch('http://localhost:5000/api/ask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question })
-    });
-
-    if (!response.ok) {
-      // Try to read the error as text for debugging
-      const errorText = await response.text();
-      answerDiv.textContent = 'Server error: ' + errorText;
+<script>
+  // Handle splash screen
+  document.addEventListener('DOMContentLoaded', () => {
+    const splashScreen = document.getElementById('splash-screen');
+    const mainContent = document.getElementById('main-content');
+    
+    // Hide splash screen after animation completes
+    setTimeout(() => {
+      splashScreen.style.opacity = '0';
+      mainContent.classList.add('visible');
+      
+      // Remove splash screen from DOM after fade out
+      setTimeout(() => {
+        splashScreen.style.display = 'none';
+      }, 800);
+    }, 2500);
+  });
+  
+  // Handle question submission via Enter key
+  document.getElementById('question').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      askQuestion();
+    }
+  });
+  
+  async function askQuestion() {
+    const questionInput = document.getElementById('question');
+    const question = questionInput.value.trim();
+    const answerDiv = document.getElementById('answer');
+    
+    // Don't proceed if question is empty
+    if (!question) {
+      answerDiv.innerHTML = '<i>Please enter a question...</i>';
       return;
     }
+    
+    // Show loading animation
+    answerDiv.innerHTML = `
+      <div class="loading">
+        <div class="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    `;
 
-    const data = await response.json();
-    answerDiv.textContent = 'Answer: ' + data.answer;
-  } catch (error) {
-    answerDiv.textContent = 'Network error: ' + error.message;
+    try {
+      const response = await fetch('http://localhost:5001/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+
+      if (!response.ok) {
+        // Try to read the error as text for debugging
+        const errorText = await response.text();
+        answerDiv.innerHTML = `<div style="color: #e74c3c;"><i class="fas fa-exclamation-circle"></i> Server error: ${errorText}</div>`;
+        return;
+      }
+
+      const data = await response.json();
+      
+      // Format the answer with some styling
+      answerDiv.innerHTML = `<div>${formatAnswer(data.answer)}</div>`;
+      
+      // Clear input field for next question
+      questionInput.value = '';
+      
+    } catch (error) {
+      answerDiv.innerHTML = `<div style="color: #e74c3c;"><i class="fas fa-exclamation-circle"></i> Network error: ${error.message}</div>`;
+    }
   }
-}
-
-  </script>
+  
+  // Format the answer text with some basic styling
+  function formatAnswer(text) {
+    // Add paragraph breaks
+    text = text.replace(/\n\n/g, '</p><p>');
+    text = text.replace(/\n/g, '<br>');
+    
+    // Wrap in paragraph tags
+    text = `<p>${text}</p>`;
+    
+    // Highlight important information
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    
+    return text;
+  }
+</script>
 </body>
 </html>

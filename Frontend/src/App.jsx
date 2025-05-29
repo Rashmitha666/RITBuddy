@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChatContainer from './components/ChatContainer';
 import HistorySection from './components/HistorySection';
+import SplashScreen from './components/SplashScreen';
 import './App.css';
 
 function App() 
@@ -9,6 +10,7 @@ function App()
   const [messages, setMessages] = useState([]);
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -98,28 +100,31 @@ function App()
   };
 
   return (
-    <div className="app-container">
-      <div className="main-content">
-        <div className="chat-column">
-          <h2>RITBuddy </h2>
-          <ChatContainer 
-            messages={messages} 
-            input={input} 
-            setInput={setInput} 
-            handleSendMessage={handleSendMessage} 
-            isLoading={isLoading}
-          />
-        </div>
-        <div className="history-column">
-          <h2>History</h2>
-          <HistorySection 
-            history={history} 
-            handleHistoryClick={handleHistoryClick} 
-            handleClearChat={handleClearChat} 
-          />
+    <>
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      <div className="app-container">
+        <div className="main-content">
+          <div className="chat-column">
+            <h2>RITBuddy <span className="tagline">Your AI Research Assistant</span></h2>
+            <ChatContainer 
+              messages={messages} 
+              input={input} 
+              setInput={setInput} 
+              handleSendMessage={handleSendMessage} 
+              isLoading={isLoading}
+            />
+          </div>
+          <div className="history-column">
+            <h2>History</h2>
+            <HistorySection 
+              history={history} 
+              handleHistoryClick={handleHistoryClick} 
+              handleClearChat={handleClearChat} 
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

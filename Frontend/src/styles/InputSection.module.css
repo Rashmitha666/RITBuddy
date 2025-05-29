@@ -1,48 +1,110 @@
 .inputSection {
   display: flex;
-  padding: 15px 0;
-  border-top: 1px solid #e0e0e0;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.inputContainer {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.inputContainer:focus-within {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
 }
 
 .inputField {
   flex: 1;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  font-size: 14px;
   resize: none;
+  border: none;
+  background-color: transparent;
+  color: var(--text-light);
+  font-size: 15px;
   outline: none;
-  transition: border-color 0.3s;
-  font-family: inherit;
-  background-color: #cccccc;
-}
-
-.inputField:focus {
-  border-color: #0084ff;
-  background-color: #ffffff;
+  padding: 10px 0;
+  line-height: 1.5;
+  max-height: 120px;
+  overflow-y: auto;
 }
 
 .inputField::placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .sendButton {
-  margin-left: 10px;
-  padding: 0 20px;
-  background-color: #0084ff;
-  color: white;
+  background-color: transparent;
+  color: var(--primary-light);
   border: none;
-  border-radius: 20px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  margin-left: 8px;
+  align-self: flex-end;
+  transition: background-color 0.2s, color 0.2s;
+  padding: 0;
 }
 
 .sendButton:hover {
-  background-color: #0073e6;
+  background-color: rgba(74, 111, 165, 0.1);
+  color: var(--accent-color);
 }
 
 .sendButton:disabled {
-  background-color: #cccccc;
+  color: rgba(255, 255, 255, 0.2);
   cursor: not-allowed;
+}
+
+.loadingDots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.loadingDots span {
+  width: 4px;
+  height: 4px;
+  background-color: currentColor;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loadingDots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 40% { 
+    transform: scale(1.0);
+  }
+}
+
+.inputFooter {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 16px;
+  margin-top: 4px;
+}
+
+.hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
 }
