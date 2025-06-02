@@ -1,14 +1,29 @@
-# Use a simple web server (nginx)
-FROM nginx:alpine
+# Backend build
+FROM node:18 AS backend
+WORKDIR /app/backend
+COPY TempBackend/package*.json ./
+RUN npm install
+COPY TempBackend/ .
+RUN npm run build
 
-# Remove the default nginx page
-RUN rm /usr/share/nginx/html/*
+# Frontend build
+FROM node:18 AS frontend
+WORKDIR /app/frontend
+COPY Frontend/package*.json ./
+RUN npm install
+COPY Frontend/ .
+RUN npm run build
 
-# Copy *your* index.html to nginx html folder
-COPY index.html /usr/share/nginx/html/index.html
+# Production image
+FROM node:18-alpine
+WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Copy built frontend & backend
+COPY --from=backend /app/backend /app/backend
+COPY --from=frontend /app/frontend /app/frontend
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Serve frontend (optional: serve via backend or static server)
+# Copy static files to backend public dir if needed
+
+# Start backend server (assuming entry is `dist/index.js`)
+CMD ["node", "TempBackend/MainServer.js"]

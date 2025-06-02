@@ -1,0 +1,20 @@
+FROM python:3.10-slim
+
+# Set workdir
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy code
+COPY api.py .
+COPY rag.py .
+COPY combined_data.json .
+COPY data/ ./data
+
+# Expose port (adjust as needed)
+EXPOSE 5000
+
+# Start the API (Flask or FastAPI)
+CMD ["python", "api.py"]

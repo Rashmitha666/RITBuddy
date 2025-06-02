@@ -13,12 +13,10 @@ import pytesseract
 import io
 
 from Security.Decrypt import decrypt_file
-from monitoring import monitor_rag_stage, monitor_llm, record_event, measure_query
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 
-@monitor_rag_stage(stage="ocr_extraction")
 def extract_text_from_images_in_pdf(pdf_path):
     """Extract text from images inside PDF pages using pdfplumber + pytesseract OCR."""
     ocr_texts = []
@@ -35,17 +33,14 @@ def extract_text_from_images_in_pdf(pdf_path):
                 if text.strip():
                     ocr_texts.append(text.strip())
     
-    record_event("pdf_ocr_processed", "success")
+    #record_event("pdf_ocr_processed", "success")
     return "\n".join(ocr_texts)
 
-# Skip decryption for testing monitoring
-# decrypt_file("data/circulars2.enc", "data/circulars2.pdf")
+decrypt_file("data/circulars2.enc", "data/circulars2.pdf")
 
-# Use a sample PDF if available, otherwise create a dummy one
 import os
 pdf_file_path = "data/circulars2.pdf"
 
-# If the PDF doesn't exist, create a dummy one for testing
 if not os.path.exists(pdf_file_path):
     os.makedirs(os.path.dirname(pdf_file_path), exist_ok=True)
     with open(pdf_file_path, 'w') as f:
@@ -72,15 +67,15 @@ dimension = embeddings[0].shape[0]
 index = faiss.IndexFlatL2(dimension)
 index.add(np.array(embeddings))
 
-@measure_query(query_type="rag_query")
+#@measure_query(query_type="rag_query")
 def ask_question(query):
     # Embedding generation
     start_embedding_time = time.time()
     try:
         query_embedding = model.encode([query])
-        record_event("embedding_generated", "success")
+        #record_event("embedding_generated", "success")
     except Exception as e:
-        record_event("embedding_generated", "failure")
+        #record_event("embedding_generated", "failure")
         raise e
     
     # Vector search
@@ -88,9 +83,9 @@ def ask_question(query):
     try:
         D, I = index.search(np.array(query_embedding), k=4)
         search_time = time.time() - start_search_time
-        record_event("vector_search_completed", "success")
+        #record_event("vector_search_completed", "success")
     except Exception as e:
-        record_event("vector_search_completed", "failure")
+        #record_event("vector_search_completed", "failure")
         raise e
     
     # Context preparation
@@ -109,10 +104,10 @@ Answer:"""
             {"role": "user", "content": prompt}
         ])
         llm_time = time.time() - start_llm_time
-        record_event("llm_response_generated", "success")
+        #record_event("llm_response_generated", "success")
         return response["message"]["content"]
     except Exception as e:
-        record_event("llm_response_generated", "failure")
+        #record_event("llm_response_generated", "failure")
         raise e
 
 if __name__ == "__main__":
