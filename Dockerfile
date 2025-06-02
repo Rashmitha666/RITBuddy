@@ -7,7 +7,6 @@ COPY package*.json ./
 RUN npm install
 
 COPY Frontend/ ./
-RUN npm run build
 
 # ---- Backend setup ----
 FROM node:18 AS backend
