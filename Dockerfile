@@ -1,27 +1,37 @@
-# Backend build
-FROM node:18 AS backend
-WORKDIR /backend
-COPY package*.json ./
-RUN npm install
-COPY TempBackend/ .
-
-# Frontend build
+# ---- Frontend build ----
 FROM node:18 AS frontend
-WORKDIR /frontend
+
+WORKDIR /app/frontend
+
 COPY Frontend/package*.json ./
 RUN npm install
-COPY Frontend/ .
 
-# Production image
-FROM node:18-alpine
-WORKDIR /
+COPY Frontend/ ./
+RUN npm run build
 
-# Copy built frontend & backend
-COPY --from=backend /backend /backend
-COPY --from=frontend /frontend /frontend
+# ---- Backend setup ----
+FROM node:18 AS backend
 
-# Serve frontend (optional: serve via backend or static server)
-# Copy static files to backend public dir if needed
+WORKDIR /app/backend
 
-# Start backend server (assuming entry is `dist/index.js`)
-CMD ["node", "TempBackend/MainServer.js"]
+# Install backend deps
+COPY package*.json ./
+RUN npm install
+
+# Copy backend source files
+COPY TempBackend/ ./
+
+# ---- Final image ----
+FROM node:18 AS final
+
+# Set workdir
+WORKDIR /app
+
+# Copy backend from build stage
+COPY --from=backend /app/backend ./
+
+# Copy built frontend into backend/public (or similar)
+COPY --from=frontend /app/frontend/dist ./public
+
+# Default start command (update if needed)
+CMD ["npm", "start"]
