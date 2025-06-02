@@ -4,7 +4,6 @@ WORKDIR /app/backend
 COPY package*.json ./
 RUN npm install
 COPY TempBackend/ .
-RUN npm run build
 
 # Frontend build
 FROM node:18 AS frontend
@@ -12,7 +11,6 @@ WORKDIR /app/frontend
 COPY Frontend/package*.json ./
 RUN npm install
 COPY Frontend/ .
-RUN npm run build
 
 # Production image
 FROM node:18-alpine
