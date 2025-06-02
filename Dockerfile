@@ -14,24 +14,24 @@ FROM node:18 AS backend
 
 WORKDIR /app/backend
 
-# Install backend deps
-COPY package*.json ./
+COPY TempBackend/package*.json ./
 RUN npm install
 
-# Copy backend source files
 COPY TempBackend/ ./
 
 # ---- Final image ----
 FROM node:18 AS final
 
-# Set workdir
 WORKDIR /app
 
-# Copy backend from build stage
+# Copy backend from previous stage
 COPY --from=backend /app/backend ./
 
-# Copy built frontend into backend/public (or similar)
+# Copy frontend build into backend's public folder
 COPY --from=frontend /app/frontend/dist ./public
 
-# Default start command (update if needed)
-CMD ["npm", "start"]
+# Expose backend port (change if your backend runs on a different port)
+EXPOSE 3000
+
+# Start the backend server
+CMD ["node", "MainServer.js"]
