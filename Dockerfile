@@ -1,7 +1,7 @@
 # Backend build
 FROM node:18 AS backend
 WORKDIR /app/backend
-COPY TempBackend/package*.json ./
+COPY package*.json ./
 RUN npm install
 COPY TempBackend/ .
 RUN npm run build
