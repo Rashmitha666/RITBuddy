@@ -8,3 +8,6 @@ ollama
 prometheus-client==0.17.1
 psutil==5.9.5
 flask-cors
+pytesseract
+PIL
+pdfplumber

@@ -46,3 +46,10 @@ jobs:
         working-directory: ./Frontend
         run: |
           echo "✅ Frontend setup complete. Add tests/build commands here."
+
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Python Scripts 
+        run: python ./scripts/tag_new_version.py
