@@ -23,6 +23,7 @@ subprocess.run(["git", "config", "user.name", "Rashmitha666"], check=True)
 subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
 
 try:
+    # Get latest tag version number
     current_version = subprocess.check_output(
         ["git", "describe", "--tags", "--abbrev=0"], stderr=subprocess.DEVNULL
     ).decode().strip()
@@ -33,19 +34,24 @@ except subprocess.CalledProcessError:
     current_version_int = 0
     print("No tags found. Starting from version 0.")
 
-# Delete local tags
+# Delete all local tags
 local_tags = subprocess.check_output(["git", "tag"]).decode().splitlines()
 for tag in local_tags:
-    subprocess.run(["git", "tag", "-d", tag])
+    subprocess.run(["git", "tag", "-d", tag], check=True)
+
+# Optional: Delete remote tags (comment if you don't want this)
+# for tag in local_tags:
+#     subprocess.run(["git", "push", "origin", f":refs/tags/{tag}"], check=True)
 
 # Increment version
 new_version = str(current_version_int + 1)
 print(f"New version: {new_version}")
 
-# Create and push new tag
+# Create new tag
 subprocess.run(["git", "tag", new_version], check=True)
-result = subprocess.run(["git", "push", "origin", new_version])
 
+# Push new tag
+result = subprocess.run(["git", "push", "origin", new_version])
 if result.returncode != 0:
     print("Failed to push the tag.")
     sys.exit(1)
