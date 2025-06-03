@@ -19,7 +19,7 @@ pat = ascii_decrypt(encrypted)
 
 print(pat)
                                                             
-remote_url = f"https://Rashmitha666:{pat}@github.com/Rashmitha666/RITBuddy.git"
+remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
 
 
 
