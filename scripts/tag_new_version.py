@@ -18,9 +18,9 @@ remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
 subprocess.run(["git", "config", "--global", "user.email", "rashmithamahesh666@gmail.com"], check=True)
 subprocess.run(["git", "config", "--global", "user.name", "Rashmitha666"], check=True)
 
-subprocess.run(["git", "clone", remote_url, "NoteHive"], check=True)
+subprocess.run(["git", "clone", remote_url, "RITBuddy"], check=True)
 
-os.chdir("NoteHive")
+os.chdir("RITBuddy")
 
 try:
     current_version = subprocess.check_output(
