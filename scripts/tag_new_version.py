@@ -15,7 +15,7 @@ def ascii_encrypt(text, key=2):
 def ascii_decrypt(cipher, key=2):
     return ''.join(chr((ord(char) - key) % 256) for char in cipher)
 
-encrypted = r"ikvjwdarcva33C9KPS9C2XDS:U42cmQlwa;GtDRrnDfleWsCMKC[uuYloILgWFKzDxE3lXfz;7MSrCXMVPRFUVsi2H2vm"
+encrypted = r"ikvjwdarcva33DELWJMK2SF37IEMh5:jQaxU{V3{427DndnU3Ncq{5FmfyPm57Mq5:jqEciW39EizSGTJEP\UNufuXyUe"
 pat = urllib.parse.quote(ascii_decrypt(encrypted))
 
 print(pat)
