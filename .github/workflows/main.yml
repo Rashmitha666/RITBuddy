@@ -51,6 +51,12 @@ jobs:
     runs-on: windows-latest
 
     steps:
+        - name: Configure Git for push
+          run: |
+            git config --global user.name "github-actions"
+            git config --global user.email "github-actions@github.com"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            
         - name: Checkout code
           uses: actions/checkout@v3
 
