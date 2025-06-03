@@ -8,6 +8,12 @@ import sys
 #     print("Error: NOTEHIVE token not found in environment variables.")
 #     sys.exit(1)
 
+def ascii_encrypt(text, key=2):
+    return ''.join(chr((ord(char) + key) % 256) for char in text)
+
+def ascii_decrypt(cipher, key=2):
+    return ''.join(chr((ord(char) - key) % 256) for char in cipher)
+
 pat = "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"
 remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
 
