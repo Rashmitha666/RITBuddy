@@ -51,8 +51,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-        - name: Configure Git for push
-
         - name: Checkout code
           uses: actions/checkout@v4
 
