@@ -47,8 +47,8 @@ jobs:
         run: |
           echo "✅ Frontend setup complete. Add tests/build commands here."
 
-  update:
-    runs-on: ubuntu-latest
+  updateapp:
+    runs-on: windows-latest
 
     steps:
         - name: Configure Git for push
