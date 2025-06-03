@@ -48,7 +48,7 @@ jobs:
           echo "✅ Frontend setup complete. Add tests/build commands here."
 
   update:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Run Python Scripts 
