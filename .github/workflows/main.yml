@@ -51,5 +51,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Run Python Scripts 
-        run: python ./scripts/tag_new_version.py
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Run Python Scripts 
+          run: python ./scripts/tag_new_version.py

@@ -20,7 +20,7 @@ subprocess.run(["git", "config", "--global", "user.name", "Rashmitha666"], check
 
 subprocess.run(["git", "clone", remote_url, "RITBuddy"], check=True)
 
-#os.chdir("RITBuddy")
+os.chdir("RITBuddy")
 
 try:
     current_version = subprocess.check_output(
