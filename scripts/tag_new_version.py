@@ -18,7 +18,7 @@ encrypted = "ikvjwdarcva33DELWJMK2SF37IEMh5:jQaxU{V3{427DndnU3Ncq{5FmfyPm57Mq5:j
 pat = ascii_decrypt(encrypted)
 
                                                             
-remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
+remote_url = f"https://Rashmitha666:{pat}@github.com/Rashmitha666/RITBuddy.git"
 
 
 
