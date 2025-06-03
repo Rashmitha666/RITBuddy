@@ -26,6 +26,7 @@ try:
     current_version = subprocess.check_output(
         ["git", "describe", "--tags", "--abbrev=0"], stderr=subprocess.DEVNULL
     ).decode().strip()
+    
     current_version_int = int(current_version)
     print(f"Current version: {current_version}")
 
