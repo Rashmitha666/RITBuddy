@@ -52,4 +52,4 @@ jobs:
 
     steps:
       - name: Run Python Scripts 
-        run: python scripts/tag_new_version.py
+        run: python ./scripts/tag_new_version.py
