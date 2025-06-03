@@ -8,7 +8,7 @@ import sys
 #     print("Error: NOTEHIVE token not found in environment variables.")
 #     sys.exit(1)
 
-pat = "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"
+pat = "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"
 remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
 
 
