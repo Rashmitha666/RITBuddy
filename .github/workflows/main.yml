@@ -69,4 +69,4 @@ jobs:
       - name: Run tag version script
         env:
           PAT: ${{ secrets.PAT }}
-        run: python scripts/tag_new_version.py
+        run: python scripts/tag.py
