@@ -15,15 +15,12 @@ def ascii_encrypt(text, key=2):
 def ascii_decrypt(cipher, key=2):
     return ''.join(chr((ord(char) - key) % 256) for char in cipher)
 
-encrypted = r"ikvjwdarcva33DELWJMK2SF37IEMh5:jQaxU{V3{427DndnU3Ncq{5FmfyPm57Mq5:jqEciW39EizSGTJEP\UNufuXyUe"
+encrypted = r"ikvjwdarcva33C9KPS9C2XDS:U42cmQlwa;GtDRrnDfleWsCMKC[uuYloILgWFKzDxE3lXfz;7MSrCXMVPRFUVsi2H2vm"
 pat = urllib.parse.quote(ascii_decrypt(encrypted))
 
 print(pat)
                                                             
-remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
-
-
-
+remote_url = f"https://Rashmitha666:{pat}@github.com/Rashmitha666/RITBuddy.git"
 
 # # Configure Git
 subprocess.run(["git", "config", "--global", "user.email", "rashmithamahesh666@gmail.com"], check=True)
@@ -32,6 +29,7 @@ subprocess.run(["git", "config", "--global", "user.name", "Rashmitha666"], check
 subprocess.run(["git", "clone", remote_url, "RITBuddy"], check=True)
 
 os.chdir("RITBuddy")
+subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
 
 try:
     current_version = subprocess.check_output(
@@ -48,18 +46,25 @@ except subprocess.CalledProcessError:
 local_tags = subprocess.check_output(["git", "tag"]).decode().splitlines()
 for tag in local_tags:
     subprocess.run(["git", "tag", "-d", tag])
-#for tag in local_tags:
-#    subprocess.run(["git", "push", "origin", f":refs/tags/{tag}"])
+for tag in local_tags:
+   subprocess.run(["git", "push", "origin", f":refs/tags/{tag}"])
 
 # Increment version
 new_version = str(current_version_int + 1)
 print(f"New version: {new_version}")
 
-subprocess.run(["git", "tag", str(new_version)])
-result = subprocess.run(["git", "push", "origin", str(new_version)])
+subprocess.run(["git", "tag", new_version], check=True)
+
+result = subprocess.run(
+    ["git", "push", "origin", new_version],
+    capture_output=True,
+    text=True
+)
 
 if result.returncode != 0:
     print("Failed to push the tag.")
+    print("Error details:")
+    print(result.stderr)
     sys.exit(1)
 
 print("Tag pushed successfully.")

@@ -47,14 +47,4 @@ jobs:
         run: |
           echo "✅ Frontend setup complete. Add tests/build commands here."
 
-  update:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      - name: Run tag version script
-        run: python scripts/tag_new_version.py
-
       
