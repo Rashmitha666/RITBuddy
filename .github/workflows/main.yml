@@ -56,5 +56,12 @@ jobs:
           with:
             persist-credentials: true
 
+        - name: Configure Git for tag push
+          run: |
+            git config --global user.name "github-actions"
+            git config --global user.email "github-actions@github.com"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+
         - name: Run Python Scripts 
           run: python ./scripts/tag_new_version.py
