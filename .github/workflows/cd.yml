@@ -19,8 +19,3 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Push existing image
-      run: |
-        docker tag existing-image-name:tag docker.io/yourusername/ritbuddy:tag
-        docker push docker.io/yourusername/ritbuddy:tag
