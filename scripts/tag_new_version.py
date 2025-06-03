@@ -43,8 +43,8 @@ except subprocess.CalledProcessError:
 local_tags = subprocess.check_output(["git", "tag"]).decode().splitlines()
 for tag in local_tags:
     subprocess.run(["git", "tag", "-d", tag])
-for tag in local_tags:
-    subprocess.run(["git", "push", "origin", f":refs/tags/{tag}"])
+#for tag in local_tags:
+#    subprocess.run(["git", "push", "origin", f":refs/tags/{tag}"])
 
 # Increment version
 new_version = str(current_version_int + 1)
