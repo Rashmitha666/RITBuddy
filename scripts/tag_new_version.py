@@ -14,7 +14,7 @@ def ascii_encrypt(text, key=2):
 def ascii_decrypt(cipher, key=2):
     return ''.join(chr((ord(char) - key) % 256) for char in cipher)
 
-encrypted = "ikvjwdarcva33DELWJMK2SF37IEMh5:jQaxU{V3{427DndnU3Ncq{5FmfyPm57Mq5:jqEciW39EizSGTJEP\UNufuXyUe"
+encrypted = "ikvjwdarcva33DELWJMK2SF37IEMh5:jQaxU{V3{427DndnU3Ncq{5FmfyPm57Mq5:jqEciW39EizSGTJEP\\UNufuXyUe"
 pat = ascii_decrypt(encrypted)
 
                                                             
