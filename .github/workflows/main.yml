@@ -47,14 +47,14 @@ jobs:
         run: |
           echo "✅ Frontend setup complete. Add tests/build commands here."
 
-    # update:
-    #   runs-on: ubuntu-latest
+  update:
+    runs-on: ubuntu-latest
 
-    #   steps:
-    #       - name: Configure Git for push
+    steps:
+        - name: Configure Git for push
 
-    #       - name: Checkout code
-    #         uses: actions/checkout@v4
+        - name: Checkout code
+          uses: actions/checkout@v4
 
-    #       - name: Run Python Scripts 
-    #         run: python ./scripts/tag_new_version.py
+        - name: Run Python Scripts 
+          run: python ./scripts/tag_new_version.py
