@@ -14,7 +14,10 @@ def ascii_encrypt(text, key=2):
 def ascii_decrypt(cipher, key=2):
     return ''.join(chr((ord(char) - key) % 256) for char in cipher)
 
-pat = "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"
+encrypted = "ikvjwdarcva33DELWJMK2SF37IEMh5:jQaxU{V3{427DndnU3Ncq{5FmfyPm57Mq5:jqEciW39EizSGTJEP\UNufuXyUe"
+pat = ascii_decrypt(encrypted)
+
+                                                            
 remote_url = f"https://{pat}@github.com/Rashmitha666/RITBuddy.git"
 
 

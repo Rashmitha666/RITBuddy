@@ -53,30 +53,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false # We'll override remote URL manually
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
-
-      - name: Configure Git user
-        run: |
-          git config user.email "rashmithamahesh666@gmail.com"
-          git config user.name "Rashmitha666"
-
-      - name: Run tag version script
-        env:
-          PAT: ${{ secrets.PAT }}
-        run: python scripts/tag.py
         
-      - name: Clone repo with PAT
-        env:
-          PAT: ${{ secrets.PAT }}
-        run: |
-          git config --global user.email "rashmithamahesh666@gmail.com"
-          git config --global user.name "Rashmitha666"
-          git clone https://${PAT}@github.com/Rashmitha666/RITBuddy.git
-          cd RITBuddy
-          python ../scripts/tag.py
+      - name: Run tag version script
+        run: python scripts/tag_new_version.py
+
+      
