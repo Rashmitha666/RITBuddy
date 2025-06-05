@@ -93,11 +93,26 @@ function App()
 
   const handleHistoryClick = (prompt) => {
     setInput(prompt);
+    app.use('/api', router);
+
   };
 
-  const handleClearChat = () => {
-    setMessages([]);
-  };
+const handleClearChat = async () => {
+  setMessages([]);
+
+  try {
+    const response = await fetch('http://localhost:5000/api/history', {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) throw new Error('Failed to clear history');
+
+    setHistory([]);
+  } catch (error) {
+    console.error('Error clearing history:', error);
+  }
+};
+
 
   return (
     <>

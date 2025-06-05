@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./Config/Database.js";
 import router from "./Routes/QueryRoute.js";
+import drouter from "./Routes/DeleteQuery.js";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ webServer.use(cors());
 webServer.use(express.json());
 
 webServer.use("/api", router);
+webServer.use('/api', drouter);
+
 
 webServer.listen(5000, ()=>
 {
